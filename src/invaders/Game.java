@@ -132,8 +132,8 @@ public class Game {
 		long start = System.nanoTime();
 		long now = start;
 				
-		boolean left = keys[KeyEvent.VK_A];
-		boolean right = keys[KeyEvent.VK_D];
+		boolean left = keys[KeyEvent.VK_A] || keys[KeyEvent.VK_LEFT] || keys[KeyEvent.VK_NUMPAD4];
+		boolean right = keys[KeyEvent.VK_D] || keys[KeyEvent.VK_RIGHT] || keys[KeyEvent.VK_NUMPAD6];
 		boolean shoot  = keys[KeyEvent.VK_SPACE];
 		
 		if (keys[KeyEvent.VK_W])
