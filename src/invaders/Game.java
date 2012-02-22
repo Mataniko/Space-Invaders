@@ -139,16 +139,24 @@ public class Game {
 		if (keys[KeyEvent.VK_W])
 			_lives = 0;
 		
-		_started = keys[KeyEvent.VK_ENTER];	
+		_started = keys[KeyEvent.VK_ENTER];			
 		
 		if (_playerShip.tick(left, right, shoot))
 		{
 			if (_playerShot == null) {
-				_playerShot = new Shot(_playerShip,Direction.Up, 4);
-				Thread pShotThread = new Thread(_playerShot);
-				pShotThread.start();
+				_playerShot = new Shot(_playerShip,Direction.Up, 0);				
 				Sound.PlaySound(1);
 			}
+		}			
+		
+		if (_playerShot != null)
+		{
+			_playerShot.run();
+		}
+		
+		if (_enemyShot != null)
+		{
+			_enemyShot.run();
 		}
 		
 		_highScore = Math.max(_score, _highScore);					
@@ -247,9 +255,9 @@ public class Game {
 			
 			if (dist <= 15 && _enemyShot == null && (System.nanoTime() - _lastShot > 100000000L*30) )
 			{									
-					_enemyShot = new Shot(invader,Direction.Down,20);		
-					Thread eShotThread = new Thread(_enemyShot);
-					eShotThread.start();
+					_enemyShot = new Shot(invader,Direction.Down,0);		
+					//Thread eShotThread = new Thread(_enemyShot);
+					//eShotThread.start();
 					_lastShot = System.nanoTime();
 					break;
 			}
@@ -283,8 +291,6 @@ public class Game {
 				}
 			}
 		}
-			
-		
 	}
 	
 	private void CheckForInvaderHits() {

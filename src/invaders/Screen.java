@@ -44,7 +44,7 @@ public class Screen  {
 		g.drawString("SCORE",8,13);
 		g.drawString(String.valueOf(game.getScore()),8,24);		
 		g.drawString(String.valueOf(game.getLives()), 4, 260-10);
-		g.drawString("CS520", 180, 260-10);
+		g.drawString("CS565", 180, 260-10);
 		g.drawString("BAREKET", 165, 13);
 		
 		g.setColor(Color.green);		

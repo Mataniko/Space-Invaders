@@ -15,7 +15,10 @@ public class GameObject {
 	public void changeAnimFrame() { _animFrame = !_animFrame; }
 	
 	public Sprite[] getSprite() { return sprite; }
-	public Rectangle getPosition() { return new Rectangle(_position); }
+	public Rectangle getPosition() { return 
+			//new Rectangle(_position);
+			_position;
+			}
 	public void setPosition(Rectangle sprite) { _position = sprite; }
 	public boolean getExpired()
 	{		

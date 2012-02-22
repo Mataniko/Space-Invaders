@@ -57,10 +57,7 @@ public class Shot extends GameObject implements Runnable {
 				
 		
 	}
-	
-	
-	
-	
+		
 	public void Draw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		g.setColor(Color.white);
@@ -69,7 +66,7 @@ public class Shot extends GameObject implements Runnable {
 
 	@Override
 	public void run() {
-		while (!_expired)
+		if (!_expired)
 		{
 			try {			
 				Thread.sleep(_speed);
@@ -80,7 +77,7 @@ public class Shot extends GameObject implements Runnable {
 				switch (_direction)
 				{
 				case Up:
-					sprite.y-=1;	
+					sprite.y-=4;	
 					break;
 				case Down:
 					sprite.y+=1;
@@ -92,7 +89,8 @@ public class Shot extends GameObject implements Runnable {
 				if (sprite.y < 20 || sprite.y > 230)
 					_expired=true;
 				
-				setPosition(sprite);			
+				setPosition(sprite);		
+				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

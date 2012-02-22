@@ -6,6 +6,10 @@ import javax.swing.*;
 
 public class Main extends Canvas implements Runnable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6759551502528417185L;
 	private static final int WIDTH = 224;
 	private static final int HEIGHT = 260;
 	private static final int SCALE = 3;
