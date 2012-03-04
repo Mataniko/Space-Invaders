@@ -62,6 +62,7 @@ public class Screen  {
 	}
 	public BufferedImage renderMenu(Game game, boolean hasFocus)
 	{
+			Game.PAUSE=true;
 			this.game=game;
 			Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
 			g2.setColor(Color.black);

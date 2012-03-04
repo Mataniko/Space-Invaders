@@ -22,6 +22,7 @@ public class Main extends Canvas implements Runnable {
 	private Input inputHandler;	
 	private boolean hadFocus = false;
 	
+	
 	/**
 	 * @param args
 	 */
@@ -86,7 +87,7 @@ public class Main extends Canvas implements Runnable {
 
 			boolean ticked = false;
 			while (unprocessedSeconds > secondsPerTick) {
-				tick();
+				tick(tickCount);
 				unprocessedSeconds -= secondsPerTick;
 				ticked = true;
 
@@ -112,11 +113,9 @@ public class Main extends Canvas implements Runnable {
 		}
 	}
 
-	private void tick() {
-						
-		if (hasFocus()) {
-			game.tick(inputHandler.keys);
-		}
+	private void tick(int tickCount) {
+								
+			game.tick(inputHandler.keys, tickCount, hasFocus());		
 	}
 
 	private void render(boolean started) {

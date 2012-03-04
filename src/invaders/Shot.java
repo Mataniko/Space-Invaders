@@ -70,7 +70,7 @@ public class Shot extends GameObject implements Runnable {
 		{
 			try {			
 				Thread.sleep(_speed);
-				if (Game.getPause())
+				if (Game.PAUSE)
 					return;
 				Rectangle sprite = getPosition();
 				// TODO Auto-generated method stub

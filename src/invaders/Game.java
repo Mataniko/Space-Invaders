@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Game {
 	
+	
 	//Game Objects
 	private Ship _playerShip;
 	private List<Invader> _invaders;
@@ -44,12 +45,12 @@ public class Game {
 	private int _lives = 3;
 	private int moveSound=4;
 	private boolean isInitalized = false;
-	private static boolean _pause = false;
+	public static boolean PAUSE;
 	private int _score = 0;	
 
 	
 	
-
+	private int currentTick=0;
 	private int _highScore=0;
 	private boolean _start=false;
 	private long _lastShot= System.nanoTime();
@@ -58,15 +59,13 @@ public class Game {
 	
 	private static int SCALE = 1;
 	public static int getScale() { return SCALE; }
-	
-	public static boolean getPause() { return _pause; }
+		
 
 	public Game()
 	{				
 		isInitalized = false;		
 		_highScore = Highscore.ReadHighscore();			
-		isInitalized=initialize(true);
-		MoveInvaders.start();					
+		isInitalized=initialize(true);				
 	}
 	
 	private boolean initialize(boolean resetScoreAndLives)
@@ -79,14 +78,13 @@ public class Game {
 			
 			Highscore.WriteHighscore(_score);
 			_score = 0;
-			_lives = 3;
-			//DrawStartScreen();
-			
+			_lives = 3;			
 		}
 		_lastShot = System.nanoTime();
 		_playerShip = new Ship(18,260-44,13,8);
 		
 		_explosions = new ArrayList<Explosion>();
+		
 		//Initialize invaders		
 		CreateInvaders();
 		CreateBunkers();
@@ -96,39 +94,26 @@ public class Game {
 	}
 	
 	
-		private Thread MoveInvaders = new Thread(new Runnable() {
-			
-			@Override
-			public synchronized void run() {
-				while (_invaders.size() > 0 || _lives > 0)
-				{
-					if (_pause)
-						continue;
-										
-					try {
-						Thread.sleep(_invaders.size()*25);
-					} catch (InterruptedException e) {						
-						e.printStackTrace();
-					}	
-															
-					for (Invader invader : _invaders)
-					{
-						invader.MoveInvader(_direction);
-						invader.changeAnimFrame();
-					}
-					Sound.PlaySound(moveSound++);
-					if (moveSound==8)
-						moveSound=4;	
-					
-					
-				}				
+	private void MoveInvaders()
+	{
+		for (Invader invader : _invaders)
+			{
+				invader.MoveInvader(_direction);
+				invader.changeAnimFrame();
 			}
-		});
-	
+			Sound.PlaySound(moveSound++);
+			if (moveSound==8)
+				moveSound=4;	
+	}
 
 	
-	public void tick(boolean[] keys)
+	public void tick(boolean[] keys, int tickCount, boolean hasFocus)
 	{
+		currentTick=tickCount;
+		PAUSE = !hasFocus;
+		
+		
+		
 		long start = System.nanoTime();
 		long now = start;
 				
@@ -140,6 +125,9 @@ public class Game {
 			_lives = 0;
 		
 		_started = keys[KeyEvent.VK_ENTER];			
+		
+		if (PAUSE || ! getStarted())
+			return;
 		
 		if (_playerShip.tick(left, right, shoot))
 		{
@@ -170,16 +158,17 @@ public class Game {
 		}
 		
 		
-		if (!_pause)
-		{				
+				
 			CheckPlayerHit();
 			CheckForInvaderHits();
 			CheckBunkers();
 			SpawnMothership();
 			InvaderShoot();			
 			CheckShots();
-			_direction = GetInvaderDirection();			
-		}
+			_direction = GetInvaderDirection();		
+			if (currentTick % (4*(Math.ceil(_invaders.size()/3)+1)) == 0)
+				MoveInvaders();
+		
 		
 	}
 	
@@ -256,8 +245,6 @@ public class Game {
 			if (dist <= 15 && _enemyShot == null && (System.nanoTime() - _lastShot > 100000000L*30) )
 			{									
 					_enemyShot = new Shot(invader,Direction.Down,0);		
-					//Thread eShotThread = new Thread(_enemyShot);
-					//eShotThread.start();
 					_lastShot = System.nanoTime();
 					break;
 			}
@@ -367,8 +354,7 @@ public class Game {
 		if (_playerShip.CheckCollision(_enemyShot)) //player hit
 		{
 			HandlePlayerDeath();
-			Sound.PlaySound(2);
-			//_pause=true;
+			Sound.PlaySound(2);			
 		}
 				
 	}

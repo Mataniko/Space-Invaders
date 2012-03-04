@@ -34,7 +34,7 @@ public class Explosion extends GameObject {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub		
-			if (Game.getPause())
+			if (Game.PAUSE)
 				return;
 				_expired=true;
 		}
